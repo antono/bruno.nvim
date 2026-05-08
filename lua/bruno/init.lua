@@ -418,14 +418,18 @@ end
 
 local function find_environments_dir()
 	local search_dir = vim.fn.expand("%:p:h")
-	local env_dir = vim.fn.finddir("environments", search_dir .. ";")
-
-	if env_dir == "" and vim.g.last_bruno_file then
-		search_dir = vim.fn.fnamemodify(vim.g.last_bruno_file, ":p:h")
-		env_dir = vim.fn.finddir("environments", search_dir .. ";")
+	local root = find_collection_root(search_dir)
+	if not root and vim.g.last_bruno_file then
+		root = find_collection_root(vim.fn.fnamemodify(vim.g.last_bruno_file, ":p:h"))
 	end
-
-	return env_dir
+	if not root then
+		return ""
+	end
+	local env_dir = root .. "/environments"
+	if vim.fn.isdirectory(env_dir) == 1 then
+		return env_dir
+	end
+	return ""
 end
 
 local function set_env_picker()
