@@ -2,12 +2,12 @@
 
 # Features:
 
-- **Execute Bruno requests** - Run `.bru` files directly from Neovim
-- **Smart fallback** - Uses last opened `.bru` file when current buffer isn't a Bruno file
+- **Execute Bruno requests** - Run `.bru` and `.yml` (OpenCollection) files directly from Neovim
+- **Smart fallback** - Uses last opened Bruno file when current buffer isn't a Bruno file
 - **Environment switching** - Select Bruno environments via a picker (`telescope`, `fzf-lua`, or `snacks`)
 - **Formatted output** - Clean response display with request details and JSON formatting
 - **Output toggle** - Switch between formatted and raw JSON output
-- **Content search** - Search Bruno files by their contents using your chosen picker
+- **Content search** - Search Bruno files (`.bru` and `.yml`) by their contents using your chosen picker
 - **Persistent sidebar** - Reuses output buffer to avoid window clutter
 
 ## Screenshots:
@@ -63,7 +63,7 @@ Can also be installed from [nixpkgs](https://search.nixos.org/packages?channel=u
 ```
 
 # Usage:
-### Run currently opened .bru file
+### Run currently opened Bruno request (.bru / .yml)
 
 :BrunoRun
 
@@ -71,7 +71,7 @@ Can also be installed from [nixpkgs](https://search.nixos.org/packages?channel=u
 
 :BrunoEnv
 
-### Search for .bru files
+### Search for Bruno files (.bru / .yml)
 
 :BrunoSearch
 
