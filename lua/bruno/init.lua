@@ -317,6 +317,9 @@ local function format_bruno_output(raw_output)
 	)
 
 	table.insert(formatted, string.format("Time: **%dms**", result.response.responseTime))
+	if M.current_env then
+		table.insert(formatted, string.format("Env: **%s**", M.current_env))
+	end
 	table.insert(formatted, "")
 
 	local res_headers = format_headers(result.response.headers)
