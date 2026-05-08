@@ -52,7 +52,7 @@ local search_pickers = {
 			prompt_title = prompt,
 			search_dirs = search_dirs,
 			glob_pattern = "{*.bru,*.yml}",
-			attach_mappings = function(prompt_bufnr, map)
+			attach_mappings = function(prompt_bufnr, _map)
 				actions.select_default:replace(function()
 					actions.close(prompt_bufnr)
 					local selection = action_state.get_selected_entry()
@@ -85,7 +85,7 @@ local env_pickers = {
 
 		snacks.picker.select(env_names, {
 			prompt = prompt .. ": ",
-		}, function(selected_item, idx)
+		}, function(selected_item, _idx)
 			if selected_item then
 				M.current_env = selected_item
 				print("Bruno environment set to: " .. M.current_env)
@@ -104,7 +104,7 @@ local env_pickers = {
 				prompt_title = prompt,
 				finder = finders.new_table({ results = env_names }),
 				sorter = conf.generic_sorter({}),
-				attach_mappings = function(prompt_bufnr, map)
+				attach_mappings = function(prompt_bufnr, _map)
 					actions.select_default:replace(function()
 						actions.close(prompt_bufnr)
 						local selection = action_state.get_selected_entry()
