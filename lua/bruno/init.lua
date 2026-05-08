@@ -126,7 +126,7 @@ local function get_valid_collections()
 end
 
 local function is_not_nil(value)
-	return value ~= nil and value ~= vim.NIL
+	return value ~= nil and value ~= vim.NIL and value ~= vim.NULL
 end
 
 local function set_buffer_properties(bufnr, name)
@@ -263,13 +263,13 @@ local function pretty_json_str(s, indent)
 end
 
 local function format_headers(headers)
-	if not headers or #headers == 0 then
+	if headers == nil or headers == vim.NULL or headers == vim.NIL then
 		return {}
 	end
 	local lines = {}
-	for _, h in ipairs(headers) do
-		if h.disabled ~= true then
-			table.insert(lines, string.format("%s: %s", h.name, h.value))
+	for name, value in pairs(headers) do
+		if value ~= nil and value ~= vim.NULL and value ~= vim.NIL then
+			table.insert(lines, string.format("%s: %s", name, value))
 		end
 	end
 	return lines
@@ -291,18 +291,15 @@ local function format_bruno_output(raw_output)
 
 	local req_headers = format_headers(result.request.headers)
 	if #req_headers > 0 then
-		table.insert(formatted, "{{{ Request Headers")
+		table.insert(formatted, "## Headers")
 		table.insert(formatted, "```")
 		for _, line in ipairs(req_headers) do
 			table.insert(formatted, line)
 		end
 		table.insert(formatted, "```")
-		table.insert(formatted, "}}}")
+		table.insert(formatted, "## End Headers")
 		table.insert(formatted, "")
 	end
-
-	table.insert(formatted, "---")
-	table.insert(formatted, "")
 
 	table.insert(formatted, "# Response")
 	table.insert(formatted, "")
@@ -324,18 +321,15 @@ local function format_bruno_output(raw_output)
 
 	local res_headers = format_headers(result.response.headers)
 	if #res_headers > 0 then
-		table.insert(formatted, "{{{ Response Headers")
+		table.insert(formatted, "## Headers")
 		table.insert(formatted, "```")
 		for _, line in ipairs(res_headers) do
 			table.insert(formatted, line)
 		end
 		table.insert(formatted, "```")
-		table.insert(formatted, "}}}")
+		table.insert(formatted, "## End Headers")
 		table.insert(formatted, "")
 	end
-
-	table.insert(formatted, "---")
-	table.insert(formatted, "")
 
 	if is_not_nil(result.response.data) then
 		table.insert(formatted, "# Response Data")
@@ -406,6 +400,7 @@ local function run_bruno()
 				if M.show_formatted_output then
 					vim.api.nvim_buf_set_option(bufnr, "filetype", "markdown")
 					vim.api.nvim_buf_set_option(bufnr, "foldmethod", "marker")
+					vim.api.nvim_buf_set_option(bufnr, "foldmarker", "## Headers,End Headers")
 					vim.api.nvim_buf_set_option(bufnr, "foldlevel", 0)
 					local ok, result = pcall(format_bruno_output, output)
 					if ok then
@@ -455,6 +450,7 @@ local function toggle_output_format()
 			if M.show_formatted_output then
 				vim.api.nvim_buf_set_option(bufnr, "filetype", "markdown")
 				vim.api.nvim_buf_set_option(bufnr, "foldmethod", "marker")
+				vim.api.nvim_buf_set_option(bufnr, "foldmarker", "## Headers,End Headers")
 				vim.api.nvim_buf_set_option(bufnr, "foldlevel", 0)
 				local ok, result = pcall(format_bruno_output, M.last_raw_output)
 				lines = ok and result or vim.split(M.last_raw_output, "\n")
