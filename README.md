@@ -62,6 +62,29 @@ Can also be installed from [nixpkgs](https://search.nixos.org/packages?channel=u
 }
 ```
 
+## render-markdown.nvim
+
+For richer output rendering, pair with [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim). The formatted output is valid Markdown (`filetype=markdown`), so render-markdown will automatically render headings, code fences, bold text, etc.
+
+```lua
+{
+    "MeanderingProgrammer/render-markdown.nvim",
+    opts = {},
+    -- The Bruno Output buffer will be picked up automatically via filetype.
+}
+```
+
+If you want to restrict rendering to only the Bruno output buffer, use:
+
+```lua
+{
+    "MeanderingProgrammer/render-markdown.nvim",
+    opts = {
+        buftype = { "nofile" }, -- Bruno Output buffer uses buftype=nofile
+    },
+}
+```
+
 # Usage:
 ### Run currently opened Bruno request (.bru / .yml)
 
